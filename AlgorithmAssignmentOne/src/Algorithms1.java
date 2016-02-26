@@ -3,47 +3,64 @@ import java.util.Random;
 
 public class Algorithms1 {
 	
-	public static final int SIZE = 16;
+	//public static final int SIZE = 5;
+	public static int compCount = 0;
+	public static int a1Count = 0;
 	public static final int  MAX = 10;
 	public static void algor1(int[] array)
 	{
 		int size = array.length;
+		a1Count++;
 		int j = 1;
+		a1Count++;
 		int[] copy = new int [size];
+		a1Count++;
 		
 		int i, m, r, u, v;
+		a1Count+= 5;
+			
 		
-		
-		while(j <= size - 1)
+		while(j < size - 1)
 		{
 			i = 1;
-			while(i <= size - j)
+			a1Count++;
+			while(i < size - j)
 			{
 				m = i + j - 1;
-				r = Math.min(m+j,size); //not sure what this min function is
-				
+				a1Count++;
+				r = Math.min(m+j,size-1); //not sure what this min function is
+				a1Count++;
 				for(u = i; u <= r; u++)
 				{
-					copy[u - 1] = array[u - 1];
+					copy[u ] = array[u ];
+					a1Count++;
 				}
 				u = i;
+				a1Count++;
 				v = m + 1;
+				a1Count++;
 				for(int w = i; w <= r;w++)
 				{
-					if(u > m || (v <= r && copy[v - 1] < copy[u - 1]))
+					if(u > m || (v <= r && copy[v ] < copy[u ]))
 					{
-						array[w - 1] = copy[v - 1];
+						array[w ] = copy[v ];
+						a1Count++;
 						v = v + 1;
+						a1Count++;
 					}
 					else
 					{
-						array[w - 1] = copy[u - 1];
+						array[w ] = copy[u ];
+						a1Count++;
 						u = u + 1;
+						a1Count++;
 					}
-					i = i + (2 * j);
 				}
-			j = 2 * j;
+			i = i + (2 * j);
+			a1Count++;
 			}
+		j = 2 * j;
+		a1Count++;
 		}
 	}
 	public static void compute(int[] array, int[] copy, int i)
@@ -51,16 +68,25 @@ public class Algorithms1 {
 		if(i >= array.length){
 			for(int j = 0; j < array.length; ++j){
 				if(copy[j] > 0){
-					System.out.println(copy[j]);
+					System.out.print(copy[j]);
+					compCount++;
 				}
+				compCount++;
 			}
-		} else {
+			System.out.println("");
+			compCount++;
+		}
+		else {
 		copy[i] = 0;
+		compCount++;
 		compute(array, copy, i + 1);
 		copy[i] = array[i];
+		compCount++;
 		compute(array, copy, i + 1);
 		copy[i] = 0;
+		compCount++;
 		}
+		compCount++;
 	}
 
 	public static void printArray(int[] array){
@@ -69,7 +95,7 @@ public class Algorithms1 {
 		}
 	}
 	
-	public static void compareArrays(int[] a, int[] b){
+	/*public static void compareArrays(int[] a, int[] b){
 		for(int i = 0; i < Math.min(a.length, b.length); ++i){
 			int j = a[i];
 			int k = b[i];
@@ -78,32 +104,36 @@ public class Algorithms1 {
 			
 			System.out.printf("[%"+ (SIZE%10 + 1) +"d]: %"+ (MAX%10 + 3) +"d => %"+ (MAX%10 + 3) +"d (%s)%n", i, k, j, equal);
 		}
-	}
+	}*/
 	
 	public static void main(String[] args){
-		Random rand = new Random();
+		//Random rand = new Random();
 		
-		int[] array = new int[SIZE];
-		int[] copy  = new int[SIZE];
+		int[] array = new int[7];
+		int[] copy  = new int[7];
 
-		array = new int[] {0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8};
+		array = new int[] {0,70,10,50,25,69,43};
 		
-		for(int i = 0; i < SIZE; i++){
+		for(int i = 0; i < 7; i++){
 			//array[i] = rand.nextInt(2 * MAX) - MAX;
 			copy[i] = array[i];
 		}
 		
-		
+		a1Count = 0;
 		algor1(array);
-		compareArrays(array, copy);
+		//compareArrays(array, copy);
+		System.out.println("I did this many operations: "+a1Count);
+		
 	}
 	
-//	public static void main(String[] args){
-//		int[] array = new int[SIZE];
-//		int[] copy  = new int[SIZE];
-//		
-//		array = new int[] {-1, 2, -3, 4, -5, 6, -7, 8, -9, 10};
-//		compute(array, copy, 0);
-//	}
+	/*public static void main(String[] args){
+		int[] array = new int[4];
+		int[] copy  = new int[4];
+		
+		compCount = 0;
+		array = new int[] {1, 2, 3,4};
+		compute(array, copy, 0);
+		System.out.println("I did this many operations: "+compCount);
+	}*/
 	
 }
