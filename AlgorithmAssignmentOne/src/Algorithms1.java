@@ -1,5 +1,9 @@
 import java.util.Random;
-
+/*Coded by Jacqueline Anderson and Landon Reams
+ * 
+ * 
+ * 
+ * */
 
 public class Algorithms1 {
 	
