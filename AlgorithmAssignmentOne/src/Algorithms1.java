@@ -106,13 +106,22 @@ public class Algorithms1 {
 		}
 	}*/
 	
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		//Random rand = new Random();
 		
-		int[] array = new int[7];
-		int[] copy  = new int[7];
-
-		array = new int[] {0,70,10,50,25,69,43};
+		
+		int[] array = new int[givenarray.length];
+		array[0] = 0;
+		
+		this code would make a new array with the first index as 0
+		this is because Algorithm 1 relies on ignoring the first index
+		it is commented out because it is easier for me to test by manually inputing numbers
+		
+		
+		
+		//int[] array = new int[15];
+		//int[] copy  = new int[5];
+		int [] array = new int[] {0,9,8,1,2,4,5,6,3,7,10,12,25,30,15,66,69,13,55,57,48,45,49,37,36};
 		
 		for(int i = 0; i < 7; i++){
 			//array[i] = rand.nextInt(2 * MAX) - MAX;
@@ -124,16 +133,16 @@ public class Algorithms1 {
 		//compareArrays(array, copy);
 		System.out.println("I did this many operations: "+a1Count);
 		
-	}
+	}*/
 	
-	/*public static void main(String[] args){
-		int[] array = new int[4];
-		int[] copy  = new int[4];
+	public static void main(String[] args){
+		int[] array = new int[10];
+		int[] copy  = new int[10];
 		
 		compCount = 0;
-		array = new int[] {1, 2, 3,4};
+		array = new int[] {1, 2,3,4,5,6,7,8,9,10};
 		compute(array, copy, 0);
 		System.out.println("I did this many operations: "+compCount);
-	}*/
+	}
 	
 }
