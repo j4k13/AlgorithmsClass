@@ -12,24 +12,55 @@ public class ImageCompressor {
     public void compress(File image)
     {
         //some preliminary code to make set the length of the array list
-        ArrayList<Integer> columnTally = new ArrayList<Integer>();
+        ArrayList<Integer> columnTally;
         String nextline = "";
-        int index = 0;
+        Integer index = 0;
+        Integer minIndex = 0;
         try
         {
             Scanner in = new Scanner(image);
+            if(in.hasNextLine())
+            {
+                //load first line
+                nextline = in.nextLine();
+            }
+            else
+            {
+                //if file is empty do nothing
+                return;
+            }
+            String [] nextsetofvalues = nextline.split(" ");
+            //set the size in one go
+            columnTally = new ArrayList<Integer>(nextsetofvalues.length);
+            //add all necesssary
+            for(iterator = 0; iterator < nextsetofvalues.length; iterator++)
+            {
+                Integer nextValue = Integer.parseInt(nextsetofvalues[iterator]);
+                //add first set of numbers
+                columnTally.set(iterator, (nextValue));
+                //compare to track min
+                if(columnTally.get(minIndex) > nextValue)
+                {
+                    minIndex = iterator;
+                }
+            }
             while(in.hasNextLine())
             {
                 //read line give
                 nextline = in.nextLine();
                 //break the line down
-                String [] nextsetofvalues = nextline.split(" ");
-                //tally each column
+                nextsetofvalues = nextline.split(" ");
+                //tally each column by adding what it in the line to what the sum of previous values
                 columnTally.set(index, (Integer.parseInt(nextsetofvalues[index] + columnTally.get(index))));
+                //continously track the current min value
+                if(columnTally.get(minIndex) < nextValue)
+                {
+                    minIndex = index;
+                }
 
             }
             in.close();
-            int leastdisruptive = Collections.min(columnTally);
+
         }
         catch(IOException e)
         {
