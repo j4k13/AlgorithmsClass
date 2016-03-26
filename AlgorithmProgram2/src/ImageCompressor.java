@@ -10,7 +10,7 @@ public class ImageCompressor {
 	
 	public static int OPERATIONS = 0;
 	//list of the paths
-	public static ArrayList<ArrayList<Integer>> AllPaths = new ArrayList<>();
+	public static ArrayList<List<Integer>> AllPaths = new ArrayList<>();
 
 	public static Integer[] path;
 	
@@ -38,7 +38,7 @@ public class ImageCompressor {
     			path[r] = c + 1;
     		
     		//adds list to the list of paths
-			AllPaths.add((ArrayList<Integer>) Arrays.asList(path));
+			AllPaths.add(Arrays.asList(path));
 			OPERATIONS++;
     		return array[r][c] + min; 
     	}
@@ -134,15 +134,15 @@ public class ImageCompressor {
 	        
 	        
 	        Integer[] columns = new Integer[array.length];
-	        //for(int i = 0; i < columns.length; i++){
+	        for(int i = 0; i < columns.length; i++){
 
-		       // path = new Integer[array.length];
-	        	//columns[i] = getMinCost(array, 0, i);
-	        	//reverse(path);
-	        	//path[0] = i;
-	        	//System.out.print("Col "+i+": ");
-		        //printArray(new Integer[][] {path});
-	        //}
+		        path = new Integer[array.length];
+	        	columns[i] = getMinCost(array, 0, i);
+	        	reverse(path);
+	        	path[0] = i;
+	        	System.out.print("Col "+i+": ");
+		        printArray(new Integer[][] {path});
+	        }
 			//figure out the least disruption
 			Integer winner = Collections.min(Arrays.asList(columns));
 			//which column has the solution
