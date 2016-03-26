@@ -1,13 +1,17 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
  * Created by jackie on 3/20/16.
  */
 public class ImageCompressor {
+	
+	public static int OPERATIONS = 0;
 	
 	public static Integer[] path;
 	
@@ -16,24 +20,26 @@ public class ImageCompressor {
     	if (r < 0 || c < 0 || r >= array.length || c >= array.length)
     		return Integer.MAX_VALUE;
     	else if (r == array.length - 1){
-    		return array[r][c];
+    		path[r] = 0; 
+    		return array[r][c]; 
     	}
     	else {
     		
     		//System.out.printf("Checking (%d, %d)%n",r, c);
-    		int left  = getMinCost(array, r + 1, c - 1);
-    		int none  = getMinCost(array, r + 1, c    );
-    		int right = getMinCost(array, r + 1, c + 1);
+    		int left  = getMinCost(array, r + 1, c - 1); OPERATIONS++;
+    		int none  = getMinCost(array, r + 1, c    ); OPERATIONS++;
+    		int right = getMinCost(array, r + 1, c + 1); OPERATIONS++;
     		int min   = min( left, none, right );
     		
     		if(min == left)
-    			path[r + 1] = c - 1;
+    			path[r] = c - 1;
     		else if (min == none)
-    			path[r + 1] = c;
+    			path[r] = c;
     		else
-    			path[r + 1] = c + 1;
+    			path[r] = c + 1;
     		
-    		return array[r][c] + min;
+    		OPERATIONS++;
+    		return array[r][c] + min; 
     	}
     }
     
@@ -42,9 +48,13 @@ public class ImageCompressor {
      * Converts the input line into a 2D Integer array
      * @param line
      * @return array
+     * @throws FileNotFoundException 
      */
-    public static Integer[][] lineToArray(String line)
+    public static Integer[][] arrayFromFile(String file) throws FileNotFoundException 
     {
+    	Scanner in = new Scanner(new File(file));
+  
+    	String line = in.nextLine();
     	String[] numbers = line.split(" ");
     	int width = Integer.parseInt(numbers[0]);
     	
@@ -62,6 +72,20 @@ public class ImageCompressor {
     	}
     	
     	return result;
+    }
+    
+    public static Integer[][] arrayFromRandom(int size, int max, int min){
+    	Random rand = new Random();
+    	
+		Integer[][] array = new Integer[size][size];
+		
+		for(int r = 0; r < size; r++){
+			for(int c = 0; c < size; c++){
+				array[r][c] = rand.nextInt(max + min) - min;
+			}
+		}
+		
+		return array;
     }
 
     
@@ -101,14 +125,8 @@ public class ImageCompressor {
     {
     	try 
     	{
-    		Scanner in = new Scanner(new File("myTester"));
-	
-			String line = in.nextLine();
-         
-			//First, convert the file into an array.
-	        Integer[][] array = lineToArray(line);
-	        
-	        //Print the array to console just to be sure it looks right!
+    		Integer[][] array = arrayFromRandom(10, 9, 0);
+    		
 	        printArray(array);
 	        
 	        System.out.println();
@@ -121,14 +139,15 @@ public class ImageCompressor {
 	        	columns[i] = getMinCost(array, 0, i);
 	        	//reverse(path);
 	        	//path[0] = i;
-	        	System.out.print("Col "+i+": ");
-		        printArray(new Integer[][] {path});
+	        	//System.out.print("Col "+i+": ");
+		        //printArray(new Integer[][] {path});
 	        }
 	        printArray(new Integer[][] {columns});
+	        System.out.printf("OPS: %,d",OPERATIONS);
 	       
 	       
 	         
-	         in.close();
+	         //in.close();
 		} 
     	catch (Exception e)
     	{
