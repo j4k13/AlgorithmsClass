@@ -1,7 +1,7 @@
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -9,83 +9,34 @@ import java.util.Scanner;
  */
 public class ImageCompressor {
 	
-	public enum Direction{ 
-		LEFT(-1), NONE(0), RIGHT(1); 
-		public final int value;
-		private Direction(int value){
-			this.value = value;
-		}
-	}
-    //private
-    public void compress(File image)
-    {
-        //some preliminary code to make set the length of the array list
-        ArrayList<Integer> columnTally;
-        String nextline = "";
-        Integer index = 0;
-        Integer minIndex = 0;
-        try
-        {
-            Scanner in = new Scanner(image);
-            if(in.hasNextLine())
-            {
-                //load first line
-                nextline = in.nextLine();
-            }
-            else
-            {
-                //if file is empty do nothing
-                return;
-            }
-            String [] allNumbers = nextline.split(" ");
-            
-            in.close();
-
-        }
-        catch(IOException e)
-        {
-
-        }
-
-    }
-    
+	public static Integer[] path;
+	
     public static int getMinCost(Integer[][] array, int r, int c)
     {
     	if (r < 0 || c < 0 || r >= array.length || c >= array.length)
     		return Integer.MAX_VALUE;
-    	else if (r == array.length - 1)
+    	else if (r == array.length - 1){
     		return array[r][c];
+    	}
     	else {
+    		
     		//System.out.printf("Checking (%d, %d)%n",r, c);
-    		return array[r][c] + OurMin( getMinCost(array, r + 1, c - 1),
-    								  getMinCost(array, r + 1, c),
-    								  getMinCost(array, r + 1, c + 1))[0];
+    		int left  = getMinCost(array, r + 1, c - 1);
+    		int none  = getMinCost(array, r + 1, c    );
+    		int right = getMinCost(array, r + 1, c + 1);
+    		int min   = min( left, none, right );
+    		
+    		if(min == left)
+    			path[r + 1] = c - 1;
+    		else if (min == none)
+    			path[r + 1] = c;
+    		else
+    			path[r + 1] = c + 1;
+    		
+    		return array[r][c] + min;
     	}
     }
-    public static int [] OurMin(int value1, int value2 ,int value3)
-	{
-		int [] pathinfo = new int[3];
-		int winner = min(value1,value2,value3);
-		if(winner == value1)
-		{
-			pathinfo[0] = value1;
-			pathinfo[1] = r + 1;
-			pathinfo[2] = c - 1;
-		}
-		else if(winner == value2)
-		{
-			pathinfo[0] = value2;
-			pathinfo[1] = r + 1;
-			pathinfo[2] = c;
-		}
-		else if(winner == value3)
-		{
-			pathinfo[0] = value3;
-			pathinfo[1] = r + 1;
-			pathinfo[2] = c + 1;
-		}
-		return pathinfo;
-	}
+    
     
     /**
      * Converts the input line into a 2D Integer array
@@ -124,7 +75,7 @@ public class ImageCompressor {
     	{
     		for(int col = 0; col < array[row].length; col++)
     		{
-    			System.out.printf("%3d",array[row][col]);
+    			System.out.printf("%3s", array[row][col] == null ? "-" : array[row][col]);
     			if(col < array[row].length - 1)
     				System.out.print(", ");
     		}
@@ -138,6 +89,12 @@ public class ImageCompressor {
     		return a < c ? a : c;
     	else
     		return b < c ? b : c;
+    }
+    
+    public static void reverse(Integer[] array){
+    	List<Integer> list = Arrays.asList(array);
+    	Collections.reverse(list);
+    	array = list.toArray(array);
     }
     
     public static void main(String [] args)
@@ -156,9 +113,16 @@ public class ImageCompressor {
 	        
 	        System.out.println();
 	        
+	        
 	        Integer[] columns = new Integer[array.length];
 	        for(int i = 0; i < columns.length; i++){
+
+		        path = new Integer[array.length];
 	        	columns[i] = getMinCost(array, 0, i);
+	        	//reverse(path);
+	        	//path[0] = i;
+	        	System.out.print("Col "+i+": ");
+		        printArray(new Integer[][] {path});
 	        }
 	        printArray(new Integer[][] {columns});
 	       
