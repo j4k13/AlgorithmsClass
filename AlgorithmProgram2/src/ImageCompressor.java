@@ -49,6 +49,20 @@ public class ImageCompressor {
 
     }
     
+    public static int getMinCost(Integer[][] array, int start_c, int r, int c)
+    {
+    	if (r < 0 || c < 0)
+    		return Integer.MAX_VALUE;
+    	else if (r == 0 && c == 0)
+    		return array[r][c];
+    	else {
+    		System.out.printf("Checking (%d, %d)%n",r, c);
+    		return array[r][c] + min( getMinCost(array, start_c, r - 1, c - 1),
+    								  getMinCost(array, start_c, r, c),
+    								  getMinCost(array, start_c, r - 1, c + 1));
+    	}
+    }
+    
     /**
      * Converts the input line into a 2D Integer array
      * @param line
@@ -58,6 +72,9 @@ public class ImageCompressor {
     {
     	String[] numbers = line.split(" ");
     	int width = Integer.parseInt(numbers[0]);
+    	
+    	if(numbers.length != (width * width + 1) )
+    		throw new IllegalArgumentException("Input it snot a square array!");
     	
     	Integer[][] result = new Integer[width][width];
     	
@@ -91,6 +108,14 @@ public class ImageCompressor {
     	}
     }
     
+    private static int min(int a, int b, int c)
+    {
+    	if( a < b )
+    		return a < c ? a : c;
+    	else
+    		return b < c ? b : c;
+    }
+    
     public static void main(String [] args)
     {
     	try 
@@ -105,12 +130,17 @@ public class ImageCompressor {
 	        //Print the array to console just to be sure it looks right!
 	        printArray(array);
 	         
+	        
+	        for(int i = 0; i < 32; i++){
+	        	
+	        	int c = getMinCost(array, i, 31, 29);
+	        	System.out.println(c);
+	        }
 	         
 	         in.close();
 		} 
-    	catch (FileNotFoundException e)
+    	catch (Exception e)
     	{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
