@@ -1,10 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Created by jackie on 3/20/16.
@@ -12,7 +9,9 @@ import java.util.Scanner;
 public class ImageCompressor {
 	
 	public static int OPERATIONS = 0;
-	
+	//list of the paths
+	public static ArrayList<ArrayList<Integer>> AllPaths = new ArrayList<>();
+
 	public static Integer[] path;
 	
     public static int getMinCost(Integer[][] array, int r, int c)
@@ -38,7 +37,9 @@ public class ImageCompressor {
     		else
     			path[r] = c + 1;
     		
-    		OPERATIONS++;
+    		//adds list to the list of paths
+			AllPaths.add((ArrayList<Integer>) Arrays.asList(path));
+			OPERATIONS++;
     		return array[r][c] + min; 
     	}
     }
@@ -133,15 +134,29 @@ public class ImageCompressor {
 	        
 	        
 	        Integer[] columns = new Integer[array.length];
-	        for(int i = 0; i < columns.length; i++){
+	        //for(int i = 0; i < columns.length; i++){
 
-		        path = new Integer[array.length];
-	        	columns[i] = getMinCost(array, 0, i);
+		       // path = new Integer[array.length];
+	        	//columns[i] = getMinCost(array, 0, i);
 	        	//reverse(path);
 	        	//path[0] = i;
 	        	//System.out.print("Col "+i+": ");
 		        //printArray(new Integer[][] {path});
-	        }
+	        //}
+			//figure out the least disruption
+			Integer winner = Collections.min(Arrays.asList(columns));
+			//which column has the solution
+			int indexWinner = (Arrays.asList(columns)).indexOf(winner);
+			//init array for winner path
+			Integer [] pathWinner = new Integer [AllPaths.get(indexWinner).size()];
+			//build out the array
+			for(int index = 0; index < AllPaths.get(indexWinner).size(); index++)
+			{
+				pathWinner[index] = AllPaths.get(indexWinner).get(index);
+			}
+			//print path array
+			printArray(new Integer[][]{pathWinner});
+			System.out.println();
 	        printArray(new Integer[][] {columns});
 	        System.out.printf("OPS: %,d",OPERATIONS);
 	       
