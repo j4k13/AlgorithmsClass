@@ -57,12 +57,35 @@ public class ImageCompressor {
     		return array[r][c];
     	else {
     		//System.out.printf("Checking (%d, %d)%n",r, c);
-    		return array[r][c] + min( getMinCost(array, r + 1, c - 1),
+    		return array[r][c] + OurMin( getMinCost(array, r + 1, c - 1),
     								  getMinCost(array, r + 1, c),
-    								  getMinCost(array, r + 1, c + 1));
+    								  getMinCost(array, r + 1, c + 1))[0];
     	}
     }
-    
+    public static int [] OurMin(int value1, int value2 ,int value3)
+	{
+		int [] pathinfo = new int[3];
+		int winner = min(value1,value2,value3);
+		if(winner == value1)
+		{
+			pathinfo[0] = value1;
+			pathinfo[1] = r + 1;
+			pathinfo[2] = c - 1;
+		}
+		else if(winner == value2)
+		{
+			pathinfo[0] = value2;
+			pathinfo[1] = r + 1;
+			pathinfo[2] = c;
+		}
+		else if(winner == value3)
+		{
+			pathinfo[0] = value3;
+			pathinfo[1] = r + 1;
+			pathinfo[2] = c + 1;
+		}
+		return pathinfo;
+	}
     
     /**
      * Converts the input line into a 2D Integer array
