@@ -49,19 +49,20 @@ public class ImageCompressor {
 
     }
     
-    public static int getMinCost(Integer[][] array, int start_c, int r, int c)
+    public static int getMinCost(Integer[][] array, int r, int c)
     {
-    	if (r < 0 || c < 0)
+    	if (r < 0 || c < 0 || r >= array.length || c >= array.length)
     		return Integer.MAX_VALUE;
-    	else if (r == 0 && c == 0)
+    	else if (r == array.length - 1)
     		return array[r][c];
     	else {
-    		System.out.printf("Checking (%d, %d)%n",r, c);
-    		return array[r][c] + min( getMinCost(array, start_c, r - 1, c - 1),
-    								  getMinCost(array, start_c, r, c),
-    								  getMinCost(array, start_c, r - 1, c + 1));
+    		//System.out.printf("Checking (%d, %d)%n",r, c);
+    		return array[r][c] + min( getMinCost(array, r + 1, c - 1),
+    								  getMinCost(array, r + 1, c),
+    								  getMinCost(array, r + 1, c + 1));
     	}
     }
+    
     
     /**
      * Converts the input line into a 2D Integer array
@@ -120,7 +121,7 @@ public class ImageCompressor {
     {
     	try 
     	{
-    		Scanner in = new Scanner(new File("given.txt"));
+    		Scanner in = new Scanner(new File("myTester"));
 	
 			String line = in.nextLine();
          
@@ -129,13 +130,16 @@ public class ImageCompressor {
 	        
 	        //Print the array to console just to be sure it looks right!
 	        printArray(array);
-	         
 	        
-	        for(int i = 0; i < 32; i++){
-	        	
-	        	int c = getMinCost(array, i, 31, 29);
-	        	System.out.println(c);
+	        System.out.println();
+	        
+	        Integer[] columns = new Integer[array.length];
+	        for(int i = 0; i < columns.length; i++){
+	        	columns[i] = getMinCost(array, 0, i);
 	        }
+	        printArray(new Integer[][] {columns});
+	       
+	       
 	         
 	         in.close();
 		} 
