@@ -5,45 +5,13 @@ import java.util.*;
 
 /**
  * Created by Jacqueline Anderson on 3/20/16.
+ *
+ * authors Jacqueline Anderosn and Landon Reams
  */
 public class ImageCompressor {
 	
 	public static int OPERATIONS = 0;
 	public static Integer [][] indices;
-	//list of the paths
-	//public static ArrayList<List<Integer>> AllPaths = new ArrayList<>();
-
-	//public static Integer[] path;
-	
-//    public static int getMinCost(Integer[][] array, int r, int c)
-//    {
-//    	if (r < 0 || c < 0 || r >= array.length || c >= array.length)
-//    		return Integer.MAX_VALUE;
-//    	else if (r == array.length - 1){
-//    		path[r] = 0;
-//    		return array[r][c];
-//    	}
-//    	else {
-//
-//    		//System.out.printf("Checking (%d, %d)%n",r, c);
-//    		int left  = getMinCost(array, r + 1, c - 1); OPERATIONS++;
-//    		int none  = getMinCost(array, r + 1, c    ); OPERATIONS++;
-//    		int right = getMinCost(array, r + 1, c + 1); OPERATIONS++;
-//    		int min   = min( left, none, right );
-//
-//    		if(min == left)
-//    			path[r] = c - 1;
-//    		else if (min == none)
-//    			path[r] = c;
-//    		else
-//    			path[r] = c + 1;
-//
-//    		//adds list to the list of paths
-//			AllPaths.add(Arrays.asList(path));
-//			OPERATIONS++;
-//    		return array[r][c] + min;
-//    	}
-//    }
 	/**
 	 * Converts the input array into an array that has the minimum path per each row
 	 * @param array
@@ -251,7 +219,7 @@ public class ImageCompressor {
     {
     	try
     	{
-    		Integer[][] array = arrayFromRandom(4, 10, 0);
+    		Integer[][] array = arrayFromRandom(50, 150, 0);
 
 	        printArray(array);
 	        
