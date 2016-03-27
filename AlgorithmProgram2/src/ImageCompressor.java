@@ -9,7 +9,7 @@ import java.util.*;
 public class ImageCompressor {
 	
 	public static int OPERATIONS = 0;
-	public static int [][] indices;
+	public static Integer [][] indices;
 	//list of the paths
 	//public static ArrayList<List<Integer>> AllPaths = new ArrayList<>();
 
@@ -90,22 +90,22 @@ public class ImageCompressor {
 	 * @param array
 	 * @return int Disruption
 	 */
-	public static int findBestPath(int [][] inputArray)
+	public static int findBestPath(Integer [][] inputArray)
 	{
 		int leastDisrupt = Integer.MAX_VALUE;
-		indices = new int[inputArray.length][2];
-		indices[indices.length][0] = inputArray.length;
+		indices = new Integer [inputArray.length][2];
+		indices[indices.length - 1][0] = inputArray.length;
 		int currentValue = 0;
 		//loop through the bottom array to find min start value
-		for(int iterator = 0; iterator < inputArray[inputArray.length].length;iterator++)
+		for(int iterator = 0; iterator < inputArray[inputArray.length -1].length;iterator++)
 		{
-			if(inputArray[inputArray.length][iterator] < leastDisrupt)
+			if(inputArray[inputArray.length - 1][iterator] < leastDisrupt)
 			{
-				leastDisrupt = inputArray[inputArray.length][iterator];
+				leastDisrupt = inputArray[inputArray.length - 1][iterator];
 				currentValue = iterator;
 			}
 		}
-		indices[indices.length][1] = currentValue;
+		indices[indices.length - 1][1] = currentValue;
 		leastDisrupt = Trace(inputArray, leastDisrupt, indices.length, currentValue);
 		return leastDisrupt;
 	}
@@ -115,7 +115,7 @@ public class ImageCompressor {
 	* @param array
 	* @return int Disruption
 	*/
-    public static int Trace(int [][] inputArray, int Disrupt, int row, int column)
+    public static int Trace(Integer [][] inputArray, int Disrupt, int row, int column)
 	{
 		//basecase
 		if(row == 0)
@@ -254,6 +254,16 @@ public class ImageCompressor {
 			Integer [][] alteredarray = transformArray(array);
 
 			printArray(alteredarray);
+
+			System.out.println();
+			System.out.println();
+			System.out.println();
+
+			int disruption = findBestPath(alteredarray);
+
+			System.out.println(disruption);
+
+			printArray(indices);
 
 			System.out.println();
 			System.out.println();
