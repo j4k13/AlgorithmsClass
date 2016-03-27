@@ -219,8 +219,17 @@ public class ImageCompressor {
     {
     	try
     	{
-    		Integer[][] array = arrayFromRandom(50, 150, 0);
-
+    		//Integer[][] array = arrayFromRandom(100, 150, 0);
+			Scanner in = new Scanner(new File("given.txt"));
+			Integer size = Integer.parseInt(in.next());
+			Integer [][] array = new Integer[size][size];
+			for(int rows = 0; rows < array.length; rows++)
+			{
+				for(int columns = 0 ; columns < array.length; columns++)
+				{
+					array[rows][columns] = Integer.parseInt(in.next());
+				}
+			}
 	        printArray(array);
 	        
 			System.out.println();
@@ -247,7 +256,7 @@ public class ImageCompressor {
 				else
 					System.out.println("]");
 			}
-
+			in.close();
 
 		}
     	catch (Exception e)
