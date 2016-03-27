@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 /**
- * Created by jackie on 3/20/16.
+ * Created by Jacqueline Anderson on 3/20/16.
  */
 public class ImageCompressor {
 	
@@ -55,6 +55,10 @@ public class ImageCompressor {
 		{
 			for(int column = 0; column < inputArray[0].length;column++)
 			{
+				if(row == inputArray.length -1)
+				{
+					break;
+				}
 				int value1;
 				int value2;
 				int value3;
@@ -66,16 +70,16 @@ public class ImageCompressor {
 				{
 					value1 = Integer.MAX_VALUE;
 				}
-				if(column != inputArray[0].length)
+				if(column != inputArray[0].length - 1)
 				{
-					value3 = inputArray[row+1][column+1];
+					value3 = inputArray[row + 1][column+1];
 				}
 				else
 				{
 					value3 = Integer.MAX_VALUE;
 				}
 				value2 = inputArray[row+1][column];
-				inputArray[row][column] = min(value1,value2,value3);
+				inputArray[row][column] += min(value1,value2,value3);
 			}
 		}
 		return inputArray;
@@ -84,7 +88,7 @@ public class ImageCompressor {
 	/**
 	 * finds the best path up, and saves the indices in 2d global array
 	 * @param array
-	 * @return int
+	 * @return int Disruption
 	 */
 	public static int findBestPath(int [][] inputArray)
 	{
@@ -109,7 +113,7 @@ public class ImageCompressor {
 	/**
 	* actually traces the path up for findBestPath
 	* @param array
-	* @return int
+	* @return int Disruption
 	*/
     public static int Trace(int [][] inputArray, int Disrupt, int row, int column)
 	{
@@ -237,56 +241,33 @@ public class ImageCompressor {
     
     public static void main(String [] args)
     {
-//    	try
-//    	{
-//    		Integer[][] array = arrayFromRandom(10, 9, 0);
-//
-//	        printArray(array);
-//
-//	        System.out.println();
-//
-//
-//	        Integer[] columns = new Integer[array.length];
-//			for(int iterator = 0; iterator < array.length; iterator++)
-//			{
-//				path = new Integer[array.length];
-//				columns[iterator] = getMinCost(array,0,iterator);
-//			}
-////	        for(int i = 0; i < columns.length; i++){
-////
-////		        path = new Integer[array.length];
-////	        	columns[i] = getMinCost(array, 0, i);
-////	        	//reverse(path);
-////	        	path[0] = i;
-////	        	System.out.println("What?");
-////				System.out.print("Col "+i+": ");
-////				printArray(new Integer[][] {path});
-////	        }
-//			//figure out the least disruption
-//			Integer winner = Collections.min(Arrays.asList(columns));
-//			//which column has the solution
-//			int indexWinner = (Arrays.asList(columns)).indexOf(winner);
-//			//init array for winner path
-//			Integer [] pathWinner = new Integer [AllPaths.get(indexWinner).size()];
-//			//build out the array
-//			for(int index = 0; index < AllPaths.get(indexWinner).size(); index++)
-//			{
-//				pathWinner[index] = AllPaths.get(indexWinner).get(index);
-//			}
-//			System.out.println("thing");
-//			//print path array
-//			printArray(new Integer[][]{pathWinner});
-//			System.out.println();
-//	        printArray(new Integer[][] {columns});
-//	        System.out.printf("OPS: %,d",OPERATIONS);
-//
-//
-//
-//	         //in.close();
-//		}
-//    	catch (Exception e)
-//    	{
-//			e.printStackTrace();
-//		}
+    	try
+    	{
+    		Integer[][] array = arrayFromRandom(4, 10, 0);
+
+	        printArray(array);
+
+	        System.out.println();
+			System.out.println();
+			System.out.println();
+
+			Integer [][] alteredarray = transformArray(array);
+
+			printArray(alteredarray);
+
+			System.out.println();
+			System.out.println();
+			System.out.println();
+
+	        System.out.printf("OPS: %,d",OPERATIONS);
+
+
+
+
+		}
+    	catch (Exception e)
+    	{
+			e.printStackTrace();
+		}
     }
 }
