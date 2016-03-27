@@ -49,8 +49,16 @@ public class ImageCompressor {
 	 * @param array
 	 * @return array
 	 */
-	public static Integer [][] transformArray(Integer[][] inputArray)
+	public static Integer[][] transformArray(Integer[][] inputArray)
 	{
+		Integer[][] transformed = new Integer[inputArray.length][inputArray[0].length];
+		
+		for(int r = 0; r < transformed.length; r++){
+			for(int c = 0; c < transformed[0].length; c++){
+				transformed[r][c] = new Integer(inputArray[r][c]);
+			}
+		}
+				
 		for(int row = 1; row < inputArray.length; row++)
 		{
 			for(int column = 0; column < inputArray[0].length;column++)
@@ -79,10 +87,10 @@ public class ImageCompressor {
 					value3 = Integer.MAX_VALUE;
 				}
 				value2 = inputArray[row+1][column];
-				inputArray[row][column] += min(value1,value2,value3);
+				transformed[row][column] += min(value1,value2,value3);
 			}
 		}
-		return inputArray;
+		return transformed;
 	}
 
 	/**
@@ -134,7 +142,7 @@ public class ImageCompressor {
 				value1 = Integer.MAX_VALUE;
 			}
 			//don't run out of bounds on right
-			if (column != inputArray[0].length) {
+			if (column < inputArray[0].length - 1) {
 				value3 = inputArray[row - 1][column + 1];
 			}
 			else {
@@ -246,32 +254,31 @@ public class ImageCompressor {
     		Integer[][] array = arrayFromRandom(4, 10, 0);
 
 	        printArray(array);
-
-	        System.out.println();
-			System.out.println();
+	        
 			System.out.println();
 
-			Integer [][] alteredarray = transformArray(array);
+			Integer[][] transformed = transformArray(array);
 
-			printArray(alteredarray);
-
-			System.out.println();
-			System.out.println();
+			printArray(transformed);
+			
 			System.out.println();
 
-			int disruption = findBestPath(alteredarray);
+			findBestPath(transformed);
+			
+			int bestSum = 0;
+			
+			for(int r = 0; r < indices.length; r++){
+				bestSum += array[r][indices[r][1]];
+			}
 
-			System.out.println(disruption);
-
-			printArray(indices);
-
-			System.out.println();
-			System.out.println();
-			System.out.println();
-
-	        System.out.printf("OPS: %,d",OPERATIONS);
-
-
+			System.out.printf("Sum: %d%nPath: [",bestSum);
+			for(int i = 0; i < indices.length; i++){
+				System.out.printf("%d", indices[i][1]);
+				if(i < indices.length - 1)
+					System.out.print(", ");
+				else
+					System.out.println("]");
+			}
 
 
 		}
