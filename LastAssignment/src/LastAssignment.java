@@ -1,8 +1,5 @@
 import java.util.Arrays;
 
-import LastAssignment.Alg;
-import LastAssignment.BinPackingAlgorithm;
-
 /**
  * Created by jackie on 4/26/16.
  */
@@ -28,7 +25,7 @@ public class LastAssignment {
 	/**
 	 * Algorithm A in the main method's comparison
 	 */
-	public static final BinPackingAlgorithm ALG1 = UBF;
+	public static final BinPackingAlgorithm ALG1 = SBF;
 	/**
 	 * Algorithm B in the main method's comparison
 	 */
@@ -254,12 +251,12 @@ public class LastAssignment {
 		if(aTimeSum == bTimeSum)
 			System.out.println("RUNTIME:  There was a tie!");
 		else
-			System.out.printf("RUNTIME:  %s won %3d%% of the trials! (%d to %d)%n", aTimeSum > bTimeSum ? "A" : "B", (int)(100 * timePercent), aTimeSum, bTimeSum);
+			System.out.printf("RUNTIME:  %s won %3d%% of the trials! (%d to %d)%n", aTimeSum > bTimeSum ? ALG1NAME : ALG2NAME, (int)(100 * timePercent), aTimeSum, bTimeSum);
 
 		if(aBinsSum == bBinsSum)
 			System.out.println("BINCOUNT: There was a tie!");
 		else
-			System.out.printf("BINCOUNT: %s won %3d%% of the trials! (%d to %d)%n", aBinsSum > bBinsSum ? "A" : "B", (int)(100 * binsPercent), aBinsSum, bBinsSum);
+			System.out.printf("BINCOUNT: %s won %3d%% of the trials! (%d to %d)%n", aBinsSum > bBinsSum ? ALG1NAME : ALG2NAME, (int)(100 * binsPercent), aBinsSum, bBinsSum);
 		System.out.printf("On average, Algorithm A (%s) took %,6dns and produced %2d bins.%n", ALG1NAME, (int)avgTimeA, (int)avgBinsA);
 		System.out.printf("On average, Algorithm B (%s) took %,6dns and produced %2d bins.%n", ALG2NAME, (int)avgTimeB, (int)avgBinsB);
 	}
