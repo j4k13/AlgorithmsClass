@@ -1,9 +1,47 @@
 import java.util.Arrays;
 
+import LastAssignment.Alg;
+import LastAssignment.BinPackingAlgorithm;
+
 /**
  * Created by jackie on 4/26/16.
  */
 public class LastAssignment {
+
+	/**
+	 * Unsorted best fit algorithm
+	 */
+	public static final BinPackingAlgorithm UBF = (data) -> alg_best_fit(data, false);
+	/**
+	 * Sorted best fit algorithm
+	 */
+	public static final BinPackingAlgorithm SBF = (data) -> alg_best_fit(data, true);
+	/**
+	 * Unsorted first fit algorithm
+	 */
+	public static final BinPackingAlgorithm UFF = (data) -> alg_first_fit(data, false);
+	/**
+	 * Sorted first fit algorithm
+	 */
+	public static final BinPackingAlgorithm SFF = (data) -> alg_first_fit(data, true);
+
+	/**
+	 * Algorithm A in the main method's comparison
+	 */
+	public static final BinPackingAlgorithm ALG1 = UBF;
+	/**
+	 * Algorithm B in the main method's comparison
+	 */
+	public static final BinPackingAlgorithm ALG2 = SFF;
+
+	/**
+	 * The abbreviation for Algorithm A
+	 */
+	public static final String ALG1NAME = "UBF";
+	/**
+	 * The abbreviation for Algorithm B
+	 */
+	public static final String ALG2NAME = "SFF";
 
 	/**
 	 * The maximum size that can be stored in a bin.
@@ -35,6 +73,10 @@ public class LastAssignment {
 	 */
 	public static final double DATA_MIN = 0.0;
 
+	public interface BinPackingAlgorithm {
+		public double[] pack(double[] data);
+	}
+
 	/**
 	 * Returns the data packed into bins using a Sorted First Fit Algorithm.
 	 * The element at index 0 is the # of Bins Used.
@@ -42,9 +84,10 @@ public class LastAssignment {
 	 * @param data Double array of data. Assumed to be between {@link #DATA_MIN} and {@link #DATA_MAX}
 	 * @return Double array of data packed into bins.
 	 */
-	public static double[] alg_sorted_first_fit(double[] data) {
+	public static double[] alg_first_fit(double[] data, boolean sorted) {
 		double[] bins = new double[data.length + 1];
-		Arrays.sort(data);
+		if(sorted)
+			Arrays.sort(data);
 		int binsUsed = 0;
 		int binLoc;
 		//Heh, double d
@@ -120,7 +163,7 @@ public class LastAssignment {
 		}
 	}
 
-	private enum Alg { A, B; }
+	private enum Alg { A, B, TIE; }
 
 	public static void main(String[] args) {
 		Alg[] winnersTime = new Alg[TRIAL_COUNT];
@@ -144,24 +187,28 @@ public class LastAssignment {
 			data_2 = rawData.clone();
 
 			startTime_1 = System.nanoTime();
-			bins_1 = alg_sorted_first_fit(data_1);
+			bins_1 = ALG1.pack(data_1);
 			endTime_1 = System.nanoTime();
 			diff_1 = endTime_1 - startTime_1;
 
 			startTime_2 = System.nanoTime();
-			bins_2 = alg_best_fit(data_2, true);
+			bins_2 = ALG2.pack(data_2);
 			endTime_2 = System.nanoTime();
 			diff_2 = endTime_2 - startTime_2;
 
 			if(diff_1 < diff_2)
 				winnersTime[trial - 1] = Alg.A;
-			else
+			else if(diff_1 != diff_2)
 				winnersTime[trial - 1] = Alg.B;
+			else
+				winnersTime[trial - 1] = Alg.TIE;
 
 			if(bins_1[0] < bins_2[0])
 				winnersBins[trial - 1] = Alg.A;
-			else
+			else if (bins_1[0] != bins_2[0])
 				winnersBins[trial - 1] = Alg.B;
+			else
+				winnersBins[trial - 1] = Alg.TIE;
 
 			avgTimeA += diff_1;
 			avgTimeB += diff_2;
@@ -170,9 +217,9 @@ public class LastAssignment {
 
 			if(trial % TRIAL_LOGGING_INTERVAL == 0) {
 				System.out.printf("TRIAL %" + (int)(Math.log10(TRIAL_COUNT)+1) +
-					"d -- ALG1: %,7dns | ALG2: %,7dns%n",
-					trial, endTime_1 - startTime_1,
-					       endTime_2 - startTime_2);
+					"d -- ALG1: %,7dns & %3d bins | ALG2: %,7dns & %3d bins%n",
+					trial, endTime_1 - startTime_1, (int)bins_1[0],
+					       endTime_2 - startTime_2, (int)bins_2[0]);
 			}
 		}
 
@@ -184,15 +231,19 @@ public class LastAssignment {
 		int aTimeSum = 0, bTimeSum = 0;
 
 		for(Alg x : winnersTime) {
-			if(x == Alg.A) aTimeSum++;
-			else           bTimeSum++;
+			switch(x) {
+			case A: aTimeSum++; break;
+			case B: bTimeSum++; break;
+			}
 		}
 
 		int aBinsSum = 0, bBinsSum = 0;
 
 		for(Alg x : winnersBins) {
-			if(x == Alg.A) aBinsSum++;
-			else           bBinsSum++;
+			switch(x) {
+			case A: aBinsSum++; break;
+			case B: bBinsSum++; break;
+			}
 		}
 
 		double timePercent = (double)(Math.max(aTimeSum, bTimeSum)) / TRIAL_COUNT;
@@ -209,7 +260,7 @@ public class LastAssignment {
 			System.out.println("BINCOUNT: There was a tie!");
 		else
 			System.out.printf("BINCOUNT: %s won %3d%% of the trials! (%d to %d)%n", aBinsSum > bBinsSum ? "A" : "B", (int)(100 * binsPercent), aBinsSum, bBinsSum);
-		System.out.printf("On average, Algorithm A took %,6dns and produced %2d bins.%n", (int)avgTimeA, (int)avgBinsA);
-		System.out.printf("On average, Algorithm B took %,6dns and produced %2d bins.%n", (int)avgTimeB, (int)avgBinsB);
+		System.out.printf("On average, Algorithm A (%s) took %,6dns and produced %2d bins.%n", ALG1NAME, (int)avgTimeA, (int)avgBinsA);
+		System.out.printf("On average, Algorithm B (%s) took %,6dns and produced %2d bins.%n", ALG2NAME, (int)avgTimeB, (int)avgBinsB);
 	}
 }
