@@ -13,12 +13,12 @@ public class LastAssignment {
 	/**
 	 * The number of data points to simulate.
 	 */
-	public static final int DATA_COUNT = 100;
+	public static final int DATA_COUNT = 1000;
 
 	/**
 	 * The number of trials to simulate.
 	 */
-	public static final int TRIAL_COUNT = 100;
+	public static final int TRIAL_COUNT = 1000;
 
 	/**
 	 * The interval at which trials will be printed to the console.
@@ -70,6 +70,7 @@ public class LastAssignment {
 	 * @return Double array of data packed into bins.
 	 */
 	public static double[] alg_best_fit(double[] data) {
+		data = java.util.Arrays.sort(data);
 		double[] bins = new double[data.length + 1];
 
 		int binsUsed = 0;
