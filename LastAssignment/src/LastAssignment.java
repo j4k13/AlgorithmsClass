@@ -69,8 +69,9 @@ public class LastAssignment {
 	 * @param data Double array of data. Assumed to be between {@link #DATA_MIN} and {@link #DATA_MAX}
 	 * @return Double array of data packed into bins.
 	 */
-	public static double[] alg_best_fit(double[] data) {
-		data = java.util.Arrays.sort(data);
+	public static double[] alg_best_fit(double[] data, boolean sorted) {
+		if(sorted)
+			Arrays.sort(data);
 		double[] bins = new double[data.length + 1];
 
 		int binsUsed = 0;
@@ -148,7 +149,7 @@ public class LastAssignment {
 			diff_1 = endTime_1 - startTime_1;
 
 			startTime_2 = System.nanoTime();
-			bins_2 = alg_best_fit(data_2);
+			bins_2 = alg_best_fit(data_2, true);
 			endTime_2 = System.nanoTime();
 			diff_2 = endTime_2 - startTime_2;
 
